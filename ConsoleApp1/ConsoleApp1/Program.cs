@@ -10,29 +10,26 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            int n;
+            int n1, n2;
 
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.Write("input ");
-
-            while((n = Convert.ToInt32(Console.ReadLine())) > 100 || n < 0)
+            try
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write("Error ");
-                if (n > 100) Console.WriteLine($"Error {n} > 100");
-                else Console.WriteLine($"Error {n} < 0");
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("input1: ");
+                n1 = Convert.ToInt32(Console.ReadLine());
+
+                Console.Write("input2: ");
+                n2 = Convert.ToInt32(Console.ReadLine());
             }
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Great! Here is your result");
+            catch (Exception)
+            {
+                n1 = 90;
+                n2 = 10;
+            }
 
-            Console.ForegroundColor = ConsoleColor.White;
+            int result = (n2 * n1) / 100;
 
-            if (n % 3 == 0 && n % 5 == 0) Console.WriteLine("FizzBuzz");
-            else if (n % 3 == 0) Console.WriteLine("Fizz");
-            else if (n % 5 == 0) Console.WriteLine("Buzz");
-            else Console.WriteLine(n);
+            Console.WriteLine(result);
         }
     }
 }
