@@ -1,52 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ConsoleApp.StudentInfo;
+
 namespace ConsoleApp
 {
-    internal class Student
-    {
-        public readonly string firstname;
-        public readonly byte age;
-        public readonly bool AgeОver18;
-
-        public Student(string firstname = "Alex", byte age = 18)
-        {
-            if (age > 100) age = 18;
-
-            this.firstname = firstname;
-            this.age = age;
-            this.AgeОver18 = age >= 18;
-        }
-
-        Student() { }
-    }
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            Student[] students = new Student[5];
+            StudentGroup students = new StudentGroup();
 
-            for (byte b = 0;b < 5; b++)
-            {
-                Console.WriteLine("input firstname ");
-                string firtsname = Console.ReadLine();
-                Console.WriteLine("input age ");
-                byte age = Convert.ToByte(Console.ReadLine());
+            students.AddStudent(new Student(GetNewName(), GetNewName(), (byte)new Random().Next(1, 100)));
+            Thread.Sleep(10);
+            students.AddStudent(new Student(GetNewName(), GetNewName(), (byte)new Random().Next(1, 100)));
+            Thread.Sleep(10);
+            students.AddStudent(new Student(GetNewName(), GetNewName(), (byte)new Random().Next(1, 100)));
+            Thread.Sleep(10);
+            students.AddStudent(new Student(GetNewName(), GetNewName(), (byte)new Random().Next(1, 100)));
+            Thread.Sleep(10);
+            students.AddStudent(new Student(GetNewName(), GetNewName(), (byte)new Random().Next(1, 100)));
 
-                students[b] = new Student(firtsname, age);
-            }
+            students.AddStudent(new Student());
+            students.QuantityStudents();
+            students.RemoveStudent(5);
+            students.QuantityStudents();
 
-            for (byte b = 0; b < 5; b++)
-                if (students[b].AgeОver18)
-                {
-                    Console.WriteLine("firtsname " + students[b].firstname);
-                    Console.WriteLine("age " + students[b].age);
-                }
+            Console.ReadKey();
+        }
+
+        static string GetNewName()
+        {
+            string name = "";
+            string letter = "qwertyuiopasdfghjklzxcvbnm";
+            Thread.Sleep(10);
+            int length = new Random().Next(1, 20);
+
+            for (int i = 0; i < length; i++)
+                name += letter[new Random().Next(0, 25)];
+
+            return name;
         }
     }
 }

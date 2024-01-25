@@ -9,3 +9,6 @@ C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Debug\ConsoleApp.csproj
 C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Debug\ConsoleApp.csproj.CoreCompileInputs.cache
 C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Debug\ConsoleApp.exe
 C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Debug\ConsoleApp.pdb
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\bin\Debug\ConsoleApp.exe.config
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\bin\Debug\ConsoleApp.exe
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\bin\Debug\ConsoleApp.pdb
