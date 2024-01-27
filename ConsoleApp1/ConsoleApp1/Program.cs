@@ -1,26 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp1
+class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        Console.Write("Введіть перше число:");
+        if (!int.TryParse(Console.ReadLine(), out int number1))
         {
-            Console.Write("input ");
-            int i = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("1 - c, 2 - f:");
-            int j = Convert.ToInt32(Console.ReadLine());
-
-            if (j == 1)
-                Console.WriteLine("C"+5/9*(i - 32));
-
-            else
-                Console.WriteLine("F" + 5 / 9 * (i + 32));
+            Console.WriteLine("Некоректний ввід. Будь ласка, введіть ціле число.");
+            return;
         }
+
+        Console.Write("Введіть друге число:");
+        if (!int.TryParse(Console.ReadLine(), out int number2))
+        {
+            Console.WriteLine("Некоректний ввід. Будь ласка, введіть ціле число.");
+            return;
+        }
+
+        if (number1 > number2)
+        {
+            int temp = number1;
+            number1 = number2;
+            number2 = temp;
+        }
+
+        Console.WriteLine($"Парні числа у діапазоні від {number1} до {number2}:");
+        for (int i = number1; i < number2; i++)
+            if (i % 2 == 0)
+                Console.WriteLine(i);
     }
 }
