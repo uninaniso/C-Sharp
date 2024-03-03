@@ -6,201 +6,139 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
-    interface IAnimal
+    class NoSupportLogging : Exception
     {
-        event EventHandler<string> HealthChanged;
-        string Name { get; }
-        void Voice();
-        void Eat();
-        void Heal();
-        void SetEnclosure(Enclosure enclosure);
+        public NoSupportLogging() : base() { }
     }
 
-    abstract class Mammal : IAnimal
+    abstract class Log
     {
-        public event EventHandler<string> HealthChanged;
-        public string Name { get; protected set; }
-        public string DietType { get; set; }
-        public string HealthStatus { get; set; }
-        public Enclosure Enclosure { get; private set; }
-
-        public abstract void Voice();
-        public abstract void Eat();
-        public void Heal()
-        {
-            HealthStatus = "Healthy";
-            HealthChanged?.Invoke(this, $"{Name} is now healthy.");
-        }
-
-        public void SetEnclosure(Enclosure enclosure)
-        {
-            Enclosure = enclosure;
-        }
+        public static string log_History = "";
+        public static void Logging() { throw new NoSupportLogging(); }
     }
 
-    class Enclosure
+    class User
     {
-        public string Name { get; }
-        private List<IAnimal> animals = new List<IAnimal>();
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public bool IsAuthorized { get; set; }
+    }
 
-        public Enclosure(string name)
+    delegate void AuthorizationHandler(User user);
+
+    class AuthorizationSystem : Log
+    {
+        public new static string log_History = "";
+
+        private List<User> users = new List<User>();
+
+        public event AuthorizationHandler UserAuthorized;
+
+        public static void Logging(string Event, bool Is_Error = false, bool Fatal_Error = false)
         {
-            Name = name;
+            log_History += $"[{DateTime.UtcNow}] {Event} {(Is_Error ? (Fatal_Error ? "Error" : "Fatal Error") : "Info")}\n";
         }
 
-        public void AddAnimal(IAnimal animal)
+        public void AddUser(User user)
         {
-            animals.Add(animal);
-            animal.HealthChanged += AnimalHealthChanged;
-            animal.SetEnclosure(this);
-        }
-
-        public List<IAnimal> GetAnimals()
-        {
-            return animals;
-        }
-
-        public void DisplayAnimals()
-        {
-            Console.WriteLine($"Тварини у вольєрі {Name}:");
-            foreach (var animal in animals)
+            try
             {
-                Console.Write($"{animal.Name}");
-                if (animal is Mammal mammal)
-                {
-                    Console.WriteLine($" - Здоров'я: {mammal.HealthStatus}");
-                }
-                else
-                {
-                    Console.WriteLine();
-                }
+                users.Add(user);
+                Logging($"user {user} was add");
+            }
+
+            finally
+            {
+                Logging($"drying add user {user}", true);
             }
         }
 
-        private void AnimalHealthChanged(object sender, string message)
+        public void RemoveUser(User user)
         {
-            Console.WriteLine($"Повідомлення з вольєри {Name}: {message}");
-        }
-    }
-
-    class Dog : Mammal
-    {
-        public Dog(string name)
-        {
-            Name = name;
-        }
-
-        public override void Voice()
-        {
-            Console.WriteLine("Гав-гав!");
-        }
-
-        public override void Eat()
-        {
-            Console.WriteLine("Собака їсть кістки.");
-        }
-    }
-
-    class Cat : Mammal
-    {
-        public Cat(string name)
-        {
-            Name = name;
-        }
-
-        public override void Voice()
-        {
-            Console.WriteLine("Мяу!");
-        }
-
-        public override void Eat()
-        {
-            Console.WriteLine("Кіт їсть рибу.");
-        }
-    }
-
-    class Elephant : Mammal
-    {
-        public Elephant(string name)
-        {
-            Name = name;
-        }
-
-        public override void Voice()
-        {
-            Console.WriteLine("Уф-уф!");
-        }
-
-        public override void Eat()
-        {
-            Console.WriteLine("Слон їсть траву.");
-        }
-    }
-
-    class Zoo
-    {
-        private List<Enclosure> enclosures = new List<Enclosure>();
-
-        public void AddEnclosure(Enclosure enclosure)
-        {
-            enclosures.Add(enclosure);
-        }
-
-        public void DisplayEnclosures()
-        {
-            Console.WriteLine("Вольєри у зоопарку:");
-            foreach (var enclosure in enclosures)
+            try
             {
-                Console.WriteLine(enclosure.Name);
+                users.Remove(user);
+                Logging($"user {user} was deleted");
+            }
+
+            finally
+            {
+                Logging($"drying deleted user {user}", true);
             }
         }
 
-        public void FeedAnimals()
+        public void BlockUser(User user)
         {
-            foreach (var enclosure in enclosures)
+            user.IsAuthorized = false;
+            Console.WriteLine($"Користувач {user.Username} заблокований.");
+            Logging($"Користувач {user.Username} заблокований");
+        }
+
+        protected virtual void OnUserAuthorized(User user)
+        {
+            UserAuthorized?.Invoke(user);
+        }
+
+        public static void DisplayAuthorizationStatus(User user)
+        {
+            if (user.IsAuthorized)
             {
-                foreach (var animal in enclosure.GetAnimals())
-                {
-                    animal.Eat();
-                }
+                Console.WriteLine($"Користувач {user.Username} авторизований.");
+                Logging($"user {user.Username} is Authorized");
+            }
+            else
+            {
+                Console.WriteLine($"Користувач {user.Username} не авторизований.");
+                Logging($"Користувач {user.Username} не авторизований.");
             }
         }
 
-        public void HealAnimals()
+        public static void BlockUserOnFailedAuthorization(User user)
         {
-            foreach (var enclosure in enclosures)
+            Console.WriteLine($"Невдала спроба авторизації для користувача {user.Username}. Заблоковано.");
+            Logging($"Невдала спроба авторизації для користувача {user.Username}. Заблоковано.");
+        }
+
+        public void AuthorizeUser(string username, string password)
+        {
+            User user = users.Find(u => u.Username == username && u.Password == password);
+
+            if (user != null)
             {
-                foreach (var animal in enclosure.GetAnimals())
-                {
-                    animal.Heal();
-                }
+                user.IsAuthorized = true;
+                Console.WriteLine($"Користувач {user.Username} успішно авторизований.");
+                OnUserAuthorized(user);
+            }
+            else
+            {
+                Console.WriteLine($"Невірне ім'я користувача або пароль.");
+                BlockUserOnFailedAuthorization(new User { Username = username });
             }
         }
     }
 
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
-            Zoo zoo = new Zoo();
+            AuthorizationSystem authorizationSystem = new AuthorizationSystem();
+            AuthorizationHandler authorizationHandler = AuthorizationSystem.DisplayAuthorizationStatus;
 
-            Enclosure dogEnclosure = new Enclosure("Для собак");
-            dogEnclosure.AddAnimal(new Dog("Рекс"));
-            dogEnclosure.AddAnimal(new Dog("Барон"));
-            zoo.AddEnclosure(dogEnclosure);
+            authorizationSystem.AddUser(new User { Username = "user1", Password = "pass1" });
+            authorizationSystem.AddUser(new User { Username = "user2", Password = "pass2" });
 
-            Enclosure catEnclosure = new Enclosure("Для котів");
-            catEnclosure.AddAnimal(new Cat("Мурка"));
-            catEnclosure.AddAnimal(new Cat("Том"));
-            zoo.AddEnclosure(catEnclosure);
+            authorizationSystem.UserAuthorized += authorizationHandler;
 
-            Enclosure elephantEnclosure = new Enclosure("Для слонів");
-            elephantEnclosure.AddAnimal(new Elephant("Думбо"));
-            zoo.AddEnclosure(elephantEnclosure);
+            authorizationSystem.AuthorizeUser("user1", "pass1");
+            authorizationSystem.AuthorizeUser("user2", "wrongpass");
 
-            zoo.DisplayEnclosures();
-            zoo.FeedAnimals();
-            zoo.HealAnimals();
+            User userToRemove = new User { Username = "user1", Password = "pass1" };
+            authorizationSystem.RemoveUser(userToRemove);
+            authorizationSystem.RemoveUser(new User { Username = "nonexistentuser", Password = "pass" });
+
+            authorizationSystem.BlockUser(new User { Username = "user2", Password = "pass2" });
+
+            Console.WriteLine(AuthorizationSystem.log_History);
         }
     }
 }

@@ -5,7 +5,7 @@
     <LangVersion>latest</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F24CEB87-6F8E-4C38-8F35-3D8FDBAC8B31}</ProjectGuid>
+    <ProjectGuid>{68E44019-5C69-476B-B276-5FBC836BE2B5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsoleApp</RootNamespace>
     <AssemblyName>ConsoleApp</AssemblyName>
