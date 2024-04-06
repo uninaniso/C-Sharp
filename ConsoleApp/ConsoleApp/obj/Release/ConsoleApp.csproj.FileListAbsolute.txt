@@ -1,0 +1,7 @@
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\bin\Release\ConsoleApp.exe.config
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\bin\Release\ConsoleApp.exe
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\bin\Release\ConsoleApp.pdb
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Release\ConsoleApp.csproj.AssemblyReference.cache
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Release\ConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Release\ConsoleApp.exe
+C:\Users\arthu\source\repos\C#\ConsoleApp\ConsoleApp\obj\Release\ConsoleApp.pdb
