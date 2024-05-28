@@ -1,0 +1,7 @@
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\bin\Debug\Paterns.exe.config
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\bin\Debug\Paterns.exe
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\bin\Debug\Paterns.pdb
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\obj\Debug\Paterns.csproj.AssemblyReference.cache
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\obj\Debug\Paterns.csproj.CoreCompileInputs.cache
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\obj\Debug\Paterns.exe
+C:\Users\arthu\source\repos\C#\Paterns\Paterns\obj\Debug\Paterns.pdb
